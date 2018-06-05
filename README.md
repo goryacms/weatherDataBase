@@ -10,6 +10,9 @@ PostgreSQL
 
 ![ER-диаграмма](img/er.png)
 
+Т.к. в location используется автоинкрементный суррогатный ключ, 
+уникальность гарантирует  unique index на полях city и country.
+
 Распределённая транзакция 
  -
 На сервере приложения зайти в менеджер управления ( http://localhost:9990 ) , далее Configuration -> Subsystems -> Datasources -> XA.
