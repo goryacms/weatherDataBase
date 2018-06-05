@@ -5,14 +5,13 @@ import ru.bellintegrator.weatherdatabase.location.model.Location;
 import ru.bellintegrator.weatherdatabase.wind.model.Wind;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "weather", schema = "weather")
-public class Weather implements Serializable {
+public class Weather{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -116,5 +115,17 @@ public class Weather implements Serializable {
 
     public void setForecasts(List<Forecast> forecasts) {
         this.forecasts = forecasts;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Weather{" +
+                "count=" + getCount() +
+                ", created='" + getCreated() + '\'' +
+                ", lang='" + getLang() + '\'' +
+                ", wind=" + getWind() +
+                ", forecast=" + getForecasts() +
+                '}';
     }
 }
