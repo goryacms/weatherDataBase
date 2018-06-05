@@ -3,13 +3,13 @@ package ru.bellintegrator.weatherdatabase.wind.model;
 import ru.bellintegrator.weatherdatabase.weather.model.Weather;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
 
 @Entity
 @Table(name = "wind", schema = "weather")
-public class Wind implements Serializable {
+public class Wind{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
