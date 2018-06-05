@@ -1,12 +1,10 @@
 package ru.bellintegrator.weatherdatabase.jms.service;
 
-
-import ru.bellintegrator.weatherdatabase.jms.model.Location;
-import ru.bellintegrator.weatherdatabase.weather.model.Weather;
-
+import org.apache.activemq.command.Message;
+import java.util.List;
 
 public interface JmsService {
-    void saveMessage();
+    void receiveMessage(Message location);
 
-    Location receiveMessage(Location location);
+    List<String> getAllCities();
 }

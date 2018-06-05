@@ -1,61 +1,70 @@
 package ru.bellintegrator.weatherdatabase.jms.service.impl;
 
+import javax.jms.JMSException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.activemq.command.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import ru.bellintegrator.weatherdatabase.Application;
+import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.weatherdatabase.jms.view.LocationViewDeserialize;
 import ru.bellintegrator.weatherdatabase.jms.service.JmsService;
-
-
-
-
-
-import ru.bellintegrator.weatherdatabase.jms.model.Location;
-
-
-
+import ru.bellintegrator.weatherdatabase.location.dao.LocationDao;
+import ru.bellintegrator.weatherdatabase.location.model.Location;
+import ru.bellintegrator.weatherdatabase.location.service.LocationService;
+import ru.bellintegrator.weatherdatabase.location.view.LocationView;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class JmsServiceImpl implements JmsService {
+    private final LocationService locationService;
+    private final LocationDao locationDao;
+
 
     @Value("${inbound.endpoint}")
     private String destination;
 
-
-    @Override
-    public void saveMessage() {
-
-//
-//        String msg = null;
-//        String msg2 = receiveMessage2(msg);
-//
-        //System.out.println("saveMessage");
-
-
-        Location weatherInCity = receiveMessage(new Location());
-        System.out.println("Received2<" + weatherInCity.toString() + ">");
-        System.out.println("DB = " + weatherInCity.getCity());
-
+    @Autowired
+    public JmsServiceImpl(LocationService locationService, LocationDao locationDao) {
+        this.locationService = locationService;
+        this.locationDao = locationDao;
     }
 
-//    @JmsListener(destination = "sampleQueue", containerFactory = "jmsFactory")
-//    public String receiveMessage2(String msg) {
-//        System.out.println("Method Received!!!!!! :" + msg);
-//        return msg;
-//    }
+    @Override
+    @Transactional
+    @JmsListener(destination = "${inbound.endpoint}", containerFactory = "jmsFactory")
+    public void receiveMessage(Message message) {
+        String mes = null;
+        try {
+            mes = ((ActiveMQTextMessage) message).getText();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
 
+        ObjectMapper objMapper = new ObjectMapper();
+        objMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            LocationView location = objMapper.readerFor(LocationViewDeserialize.class).readValue(mes);
+            locationService.save(location);
+        } catch (IOException e) {
+            System.out.println("Ошибка");
+        }
+    }
 
     @Override
-    //@JmsListener(destination = Application.WEATHER_MESSAGE_QUEUE, containerFactory = "jmsFactory")
-    @JmsListener(destination = "${inbound.endpoint}", containerFactory = "jmsFactory")
-    //public Location receiveMessage(Location location) {
-    public Location receiveMessage(Location location) {
-        System.out.println("in Method = " + location);
-        return location;
+    @Transactional
+    public List<String> getAllCities() {
+        List<Location> all = locationDao.all();
+
+        List<String> cityList = new ArrayList<>();
+
+        all.forEach(location -> {
+            cityList.add(location.getCity());
+        });
+        return cityList;
     }
 }
