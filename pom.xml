@@ -68,18 +68,12 @@
         </dependency>
 
 
-
-
-
-
-
-
         <!-- Need this to compile JSP -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <!--Для деплоя нужен scope = provided-->
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -125,20 +119,6 @@
 
 
 
-        <!--<dependency>-->
-            <!--<groupId>io.springfox</groupId>-->
-            <!--<artifactId>springfox-swagger2</artifactId>-->
-            <!--<version>${swagger.version}</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>io.springfox</groupId>-->
-            <!--<artifactId>springfox-swagger-ui</artifactId>-->
-            <!--<version>${swagger.version}</version>-->
-        <!--</dependency>-->
-
-
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -161,23 +141,6 @@
 
 
 
-
-
-
-
-        <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-inject-bean</artifactId>
-            <version>1.4.2</version>
-        </dependency>
-
-
-        <!--<dependency>-->
-            <!--<groupId>com.atomikos</groupId>-->
-            <!--<artifactId>transactions-hibernate3</artifactId>-->
-            <!--<version>4.0.6</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions-hibernate4</artifactId>
@@ -187,7 +150,11 @@
 
 
 
-
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 
 
 
