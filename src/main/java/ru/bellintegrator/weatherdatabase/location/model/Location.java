@@ -8,9 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "location", schema = "weather")
-public class Location implements Serializable {
+public class Location {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
