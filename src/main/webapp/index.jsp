@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import = "java.io.*,java.util.*, javax.servlet.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -7,6 +8,14 @@
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <title>${title}</title>
+
+    <script>
+        function getWeather(){
+            var city = document.getElementById("cities").value;
+            location.href="${pageContext.request.contextPath}/weather?city=" + city;
+        }
+    </script>
+
 </head>
 <body>
 
@@ -22,10 +31,16 @@
 <br><br><br>
 <br><br><br>
 
+
 <div class="container body-content">
-    <form role="form" action="${pageContext.request.contextPath}/jms/save" method="POST">
-        <button type="submit" class="btn btn-success">Сформировать запись</button>
-    </form>
+    <button class="btn btn-success" onClick='getWeather();'>Просмотреть запись</button>
+    <br><hr /><br><br>
+    <select name="cities" id="cities">
+        <option >Перечень сохранённых городов</option>
+        <c:forEach items="${cities}" var="city">
+            <option value="${city}">${city}</option>
+        </c:forEach>
+    </select>
 
     <hr />
     <footer>
