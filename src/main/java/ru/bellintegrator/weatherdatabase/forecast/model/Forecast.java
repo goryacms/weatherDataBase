@@ -1,16 +1,14 @@
 package ru.bellintegrator.weatherdatabase.forecast.model;
 
 import ru.bellintegrator.weatherdatabase.weather.model.Weather;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "forecast", schema = "weather")
-public class Forecast implements Serializable {
+public class Forecast{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -48,8 +46,6 @@ public class Forecast implements Serializable {
     }
 
     // геттеры/сеттеры
-
-
     public Long getId() {
         return id;
     }
@@ -120,5 +116,17 @@ public class Forecast implements Serializable {
 
     public void setWeather(Weather weather) {
         this.weather = weather;
+    }
+
+    @Override
+    public String toString() {
+        return "Forecast{" +
+                "code=" + getCode() +
+                ", date=" + getDate() +
+                ", day='" + getDay() + '\'' +
+                ", high=" + getHigh() +
+                ", low=" + getLow() +
+                ", text='" + getText() + '\'' +
+                '}';
     }
 }
